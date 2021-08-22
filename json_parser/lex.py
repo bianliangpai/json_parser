@@ -1,25 +1,12 @@
 import re
+from json_parser.definition import keyword_token_map, Symbol
 
-
-token_map = {'{' : 'OCurly',
-             '}' : 'ECurly',
-             '[' : 'OSQUARE',
-             ']' : 'ESQUARE',
-             '\"': 'QUOTE',
-             ':' : 'COLON',
-             ',' : 'COLMA',
-             '[a-zA-Z][a-zA-Z0-9]*': 'WORD'}
-
-
-class Symbol:
-    def __init__(self, token, src):
-        self.token = token
-        self.src = src
 
 class Lexer:
     def __init__(self, src=''):
         self._src = src
         self._tokens = []
+        self._token_index = -1
         self._parse()
 
     def __str__(self):
@@ -35,18 +22,27 @@ class Lexer:
             ch = self._src[i]
             if ch == ' ' or ch == '\n' or ch == '\t':
                 pass
-            elif ch in '{}[]\":,':
-                self._tokens.append(Symbol(token_map[ch], ch))
+            elif ch in keyword_token_map.keys():
+                self._tokens.append(Symbol(keyword_token_map[ch], ch))
             elif re.search(re.compile('[a-zA-Z]'), ch):
-                tmp = ch
+                tmp = ''
                 while i < len(self._src) and re.search(re.compile('[a-zA-Z0-9]'), self._src[i]):
                     tmp += self._src[i]
                     i += 1
-                self._tokens.append(Symbol("WORD", tmp))
+                self._tokens.append(Symbol("Word", tmp))
                 continue
             else:
                 raise Exception("Unrecongnized input: {}".format(self._src[i]))
             i += 1
 
-    def next():
-        pass
+    def check_next_n(self, n):
+        tmp = self._token_index + n
+        if tmp >= len(self._tokens):
+            return None
+        return self._tokens[tmp]
+
+    def next(self):
+        self._token_index += 1
+        if self._token_index >= len(self._tokens):
+            return None
+        return self._tokens[self._token_index]
