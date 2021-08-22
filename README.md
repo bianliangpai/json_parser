@@ -2,7 +2,7 @@
 a json_parser in python
 
 ## Usage
-python main.py /path/to/json/file  
+> python main.py /path/to/json/file  
   
 the result is python builtin dict or list type.  
   
