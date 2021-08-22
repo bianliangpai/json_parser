@@ -18,6 +18,9 @@ def get_content(filename):
 
 def main():
     source_file = "{}/sample.json".format(local_dir)
+    if sys.argv == 2:
+        source_file = sys.argv[1]
+
     content = get_content(source_file)
     lexer = Lexer(content)
     # print(str(lexer))
