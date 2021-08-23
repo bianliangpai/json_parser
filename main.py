@@ -1,7 +1,10 @@
 import os, sys
 local_dir = os.path.dirname(os.path.abspath(__file__))
 
-old_PYTHONPATH = os.environ["PYTHONPATH"]
+try:
+    old_PYTHONPATH = os.environ["PYTHONPATH"]
+except:
+    old_PYTHONPATH = ""
 # 'nt' means windows
 if os.name == 'nt':
     os.environ["PYTHONPATH"] = "{};{}".format(local_dir, old_PYTHONPATH)
